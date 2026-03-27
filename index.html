@@ -4,43 +4,174 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Instagram Video Downloader</title>
-<meta name="description" content="Download Instagram videos and reels instantly.">
+<title>Instagram Downloader</title>
 
-<link rel="stylesheet" href="style.css">
+<style>
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* HEADER */
+header {
+    width: 100%;
+    text-align: center;
+    color: white;
+    padding: 30px 10px;
+}
+
+/* NAV */
+nav {
+    margin-bottom: 20px;
+}
+
+nav a {
+    color: white;
+    margin: 10px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+/* MAIN CARD */
+.container {
+    background: white;
+    width: 90%;
+    max-width: 500px;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    text-align: center;
+}
+
+/* INPUT */
+input {
+    width: 100%;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    margin-top: 10px;
+}
+
+/* BUTTON */
+button {
+    width: 100%;
+    padding: 12px;
+    background: #ff416c;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    margin-top: 10px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #e33b5c;
+}
+
+/* RESULT */
+#result {
+    margin-top: 20px;
+}
+
+video {
+    width: 100%;
+    border-radius: 10px;
+}
+
+/* DOWNLOAD BUTTON */
+.download-btn {
+    display: block;
+    background: green;
+    color: white;
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 8px;
+    text-decoration: none;
+}
+
+/* IMAGE */
+.hero-img {
+    width: 100%;
+    border-radius: 10px;
+    margin-bottom: 15px;
+}
+
+/* FOOTER */
+footer {
+    color: white;
+    margin-top: 30px;
+    padding: 15px;
+}
+</style>
 </head>
 
 <body>
 
 <header>
     <h1>Instagram Downloader</h1>
-    <p>Download Reels, Videos & Photos</p>
-</header>
+    <p>Download Reels, Videos & Photos Instantly</p>
 
-<nav>
-    <a href="index.html">Home</a>
-    <a href="about.html">About</a>
-    <a href="privacy.html">Privacy</a>
-</nav>
+    <nav>
+        <a href="#">Home</a>
+        <a href="#">About</a>
+        <a href="#">Privacy</a>
+    </nav>
+</header>
 
 <div class="container">
 
-    <div class="ad">Ad Space</div>
+    <!-- IMAGE -->
+    <img class="hero-img" src="https://images.unsplash.com/photo-1611162616475-46b635cb6868" alt="Instagram">
 
-    <input type="text" id="url" placeholder="Paste Instagram URL here">
+    <input id="url" placeholder="Paste Instagram URL here">
 
     <button onclick="download()">Download</button>
 
     <div id="result"></div>
 
-    <div class="ad">Banner Ad</div>
-
 </div>
 
 <footer>
-    <p>© 2026 InstaDownloader | Kamran Shahzad</p>
+    © 2026 InstaDownloader | Made by Irfan Ali
 </footer>
 
-<script src="script.js"></script>
+<script>
+async function download() {
+    const url = document.getElementById("url").value;
+    const result = document.getElementById("result");
+
+    if (!url) {
+        alert("Enter URL");
+        return;
+    }
+
+    result.innerHTML = "Fetching...";
+
+    try {
+        const res = await fetch(`https://api.vreden.my.id/api/igdl?url=${encodeURIComponent(url)}`);
+        const data = await res.json();
+
+        if (data.result && data.result.length > 0) {
+            let video = data.result[0].url;
+
+            result.innerHTML = `
+                <video controls src="${video}"></video>
+                <a class="download-btn" href="${video}" download>Download Video</a>
+            `;
+        } else {
+            result.innerHTML = "Failed.";
+        }
+
+    } catch {
+        result.innerHTML = "Error.";
+    }
+}
+</script>
+
 </body>
 </html>
