@@ -1,30 +1,17 @@
-async function download() {
-    const url = document.getElementById("url").value;
-    const result = document.getElementById("result");
+<script>
+async function downloadVideo() {
+    let url = document.getElementById("instaUrl").value;
 
-    if (!url) {
-        alert("Enter URL");
-        return;
-    }
-
-    result.innerHTML = "Fetching...";
+    let api = "https://api.allorigins.win/raw?url=" + encodeURIComponent(
+        "https://snapinsta.app/action.php?url=" + url
+    );
 
     try {
-        const res = await fetch(`https://api.vreden.my.id/api/igdl?url=${encodeURIComponent(url)}`);
-        const data = await res.json();
-
-        if (data.result && data.result.length > 0) {
-            let video = data.result[0].url;
-
-            result.innerHTML = `
-                <video controls src="${video}"></video>
-                <a href="${video}" download>Download Video</a>
-            `;
-        } else {
-            result.innerHTML = "Failed.";
-        }
-
-    } catch (err) {
-        result.innerHTML = "Error.";
+        let res = await fetch(api);
+        let data = await res.text();
+        alert("Processing... (Real implementation needs parsing)");
+    } catch (e) {
+        alert("Error fetching video");
     }
 }
+</script>
